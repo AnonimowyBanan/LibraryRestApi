@@ -6,21 +6,21 @@ from app.models import Author
 
 
 @author.route('/')
-def get():
+def get() -> jsonify:
     authors = Author.query.all()
 
     return jsonify([author.to_dict() for author in authors])
 
 
 @author.route('/<int:author_id>')
-def get_by_id(author_id):
+def get_by_id(author_id) -> jsonify:
     author = Author.query.get(author_id)
 
     return jsonify(author.to_dict())
 
 
 @author.route('/', methods=['POST'])
-def create():
+def create() -> jsonify:
     data = request.get_json()
 
     author = Author(first_name=data.get('first_name'), last_name=data.get('last_name'), biography=data.get('biography'))
@@ -32,7 +32,7 @@ def create():
 
 
 @author.route('/<int:author_id>', methods=['PUT'])
-def update(author_id):
+def update(author_id) -> jsonify:
     data = request.get_json()
 
     author = Author.query.get(author_id)
@@ -47,7 +47,7 @@ def update(author_id):
 
 
 @author.route('/<int:author_id>', methods=['DELETE'])
-def delete(author_id):
+def delete(author_id) -> jsonify:
     author = Author.query.get(author_id)
 
     db.session.delete(author)

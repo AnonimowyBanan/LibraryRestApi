@@ -59,9 +59,9 @@ def test_get_by_id(client):
 
     assert response.status_code == 200
     assert isinstance(response.json, dict)
-    assert response.json["first_name"] == "Test Author Name"
-    assert response.json["last_name"] == "Test Author Last Name"
-    assert response.json["biography"] == "Test Biography"
+    assert response.json["first_name"] == test_author_data["first_name"]
+    assert response.json["last_name"] == test_author_data["last_name"]
+    assert response.json["biography"] == test_author_data["biography"]
 
 
 def test_update(client):
@@ -79,9 +79,9 @@ def test_update(client):
     response = client.put("/author/1", json=test_author_data_updated)
 
     assert response.status_code == 201
-    assert response.json["first_name"] == "Test Author Name Updated"
-    assert response.json["last_name"] == "Test Author Last Name Updated"
-    assert response.json["biography"] == "Test Biography Updated"
+    assert response.json["first_name"] == test_author_data_updated["first_name"]
+    assert response.json["last_name"] == test_author_data_updated["last_name"]
+    assert response.json["biography"] == test_author_data_updated["biography"]
 
 
 def test_delete(client):
