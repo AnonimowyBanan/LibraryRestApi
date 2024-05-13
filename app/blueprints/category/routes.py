@@ -54,6 +54,7 @@ def update(category_id: int) -> jsonify:
 
     return jsonify(category.to_dict()), 201
 
+
 @category.route('/', methods=['POST'])
 def create() -> jsonify:
     data = request.get_json()

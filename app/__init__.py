@@ -5,10 +5,10 @@ from .models import *
 from .blueprints import *
 
 
-def create_app():
+def create_app(config_object: object):
     flask = Flask(__name__)
 
-    flask.config.from_object(DevelopmentConfig)
+    flask.config.from_object(config_object)
 
     db.init_app(flask)
 
@@ -24,4 +24,4 @@ def create_app():
     return flask
 
 
-app = create_app()
+app = create_app(DevelopmentConfig)
