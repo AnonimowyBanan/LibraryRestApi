@@ -56,4 +56,4 @@ def delete(publishing_house_id: int) -> jsonify:
     db.session.delete(publishing_house)
     db.session.commit()
 
-    return jsonify(publishing_house.to_dict()), 200
+    return jsonify(publishing_house.to_dict()), 204
