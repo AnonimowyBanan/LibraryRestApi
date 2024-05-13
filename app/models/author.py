@@ -9,6 +9,8 @@ class Author(db.Model, SerializerMixin):
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     biography = db.Column(db.String(255), nullable=True)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
 
     def __init__(self, first_name: str, last_name: str, biography: str = None) -> None:
         self.first_name = first_name
