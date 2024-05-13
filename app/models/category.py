@@ -9,9 +9,9 @@ class Category(db.Model, SerializerMixin):
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(255), nullable=True)
 
-    def __init__(self, name: str, description: str):
+    def __init__(self, name: str, description: str) -> None:
         self.name = name
         self.description = description
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'<Category {self.name}>'

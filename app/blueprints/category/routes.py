@@ -27,18 +27,16 @@ def get_by_id(category_id: int) -> jsonify:
     return jsonify(category.to_dict()), 200
 
 
-@category.route('/<int:category_id>', methods=['DELETE'])
-def delete(category_id: int) -> jsonify:
+@category.route('/', methods=['POST'])
+def create() -> jsonify:
+    data = request.get_json()
 
-        category = Category.query.get(category_id)
+    category = Category(name=data.get('name'), description=data.get('description'))
 
-        if not category:
-            abort(404, 'No category found')
+    db.session.add(category)
+    db.session.commit()
 
-        db.session.delete(category)
-        db.session.commit()
-
-        return jsonify({'message': 'Category deleted'}), 200
+    return jsonify(category.to_dict()), 201
 
 
 @category.route('/<int:category_id>', methods=['PUT'])
@@ -55,13 +53,15 @@ def update(category_id: int) -> jsonify:
     return jsonify(category.to_dict()), 201
 
 
-@category.route('/', methods=['POST'])
-def create() -> jsonify:
-    data = request.get_json()
+@category.route('/<int:category_id>', methods=['DELETE'])
+def delete(category_id: int) -> jsonify:
 
-    category = Category(name=data.get('name'), description=data.get('description'))
+        category = Category.query.get(category_id)
 
-    db.session.add(category)
-    db.session.commit()
+        if not category:
+            abort(404, 'No category found')
 
-    return jsonify(category.to_dict()), 201
+        db.session.delete(category)
+        db.session.commit()
+
+        return jsonify({'message': 'Category deleted'}), 200
