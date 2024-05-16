@@ -7,14 +7,14 @@ from app.models import Author
 
 @author.route('/')
 def get() -> jsonify:
-    authors = Author.query.all()
+    authors = db.session.execute(db.select(Author)).scalars()
 
     return jsonify([author.to_dict() for author in authors])
 
 
 @author.route('/<int:author_id>')
 def get_by_id(author_id) -> jsonify:
-    author = Author.query.get(author_id)
+    author = db.session.execute(db.select(Author).filter_by(id=author_id)).scalar_one()
 
     return jsonify(author.to_dict())
 
@@ -35,7 +35,7 @@ def create() -> jsonify:
 def update(author_id) -> jsonify:
     data = request.get_json()
 
-    author = Author.query.get(author_id)
+    author = db.session.execute(db.select(Author).filter_by(id=author_id)).scalar_one()
 
     author.first_name = data.get('first_name', author.first_name)
     author.last_name = data.get('last_name', author.last_name)
@@ -48,7 +48,7 @@ def update(author_id) -> jsonify:
 
 @author.route('/<int:author_id>', methods=['DELETE'])
 def delete(author_id) -> jsonify:
-    author = Author.query.get(author_id)
+    author = db.session.execute(db.select(Author).filter_by(id=author_id)).scalar_one()
 
     db.session.delete(author)
     db.session.commit()
