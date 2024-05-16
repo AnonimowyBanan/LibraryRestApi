@@ -9,7 +9,7 @@ from app.models import PublishingHouse
 @publishing_house.route('/')
 def get() -> jsonify:
 
-    publishing_houses = PublishingHouse.query.all()
+    publishing_houses = db.session.execute(db.select(PublishingHouse)).scalars()
 
     return jsonify([publishing_house.to_dict() for publishing_house in publishing_houses]), 200
 
@@ -17,7 +17,7 @@ def get() -> jsonify:
 @publishing_house.route('/<int:publishing_house_id>')
 def get_by_id(publishing_house_id: int) -> jsonify:
 
-    publishing_house = PublishingHouse.query.get(publishing_house_id)
+    publishing_house = db.session.execute(db.select(PublishingHouse).filter_by(id=publishing_house_id)).scalar()
 
     return jsonify(publishing_house.to_dict()), 200
 
@@ -26,7 +26,7 @@ def get_by_id(publishing_house_id: int) -> jsonify:
 def create() -> jsonify:
 
     data = request.json
-    publishing_house = PublishingHouse(data.get('name'), data.get('description'))
+    publishing_house = PublishingHouse(name=data.get('name'), description=data.get('description'))
 
     db.session.add(publishing_house)
     db.session.commit()
@@ -37,7 +37,7 @@ def create() -> jsonify:
 @publishing_house.route('/<int:publishing_house_id>', methods=['PUT'])
 def update(publishing_house_id: int) -> jsonify:
 
-    publishing_house = PublishingHouse.query.get(publishing_house_id)
+    publishing_house = db.session.execute(db.select(PublishingHouse).filter_by(id=publishing_house_id)).scalar()
 
     data = request.json
     publishing_house.name = data.get('name', publishing_house.name)
@@ -51,7 +51,7 @@ def update(publishing_house_id: int) -> jsonify:
 @publishing_house.route('/<int:publishing_house_id>', methods=['DELETE'])
 def delete(publishing_house_id: int) -> jsonify:
 
-    publishing_house = PublishingHouse.query.get(publishing_house_id)
+    publishing_house = db.session.execute(db.select(PublishingHouse).filter_by(id=publishing_house_id)).scalar()
 
     db.session.delete(publishing_house)
     db.session.commit()
