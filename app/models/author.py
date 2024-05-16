@@ -18,4 +18,4 @@ class Author(db.Model, SerializerMixin):
         self.biography = biography
 
     def __repr__(self) -> str:
-        return f'<Author {self.name}>'
+        return f'<Author {self.first_name} {self.last_name}>'
