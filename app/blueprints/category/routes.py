@@ -8,7 +8,7 @@ from app.extensions import db
 @category.route('/')
 def get() -> jsonify:
 
-    categories = Category.query.all()
+    categories = db.session.execute(db.select(Category)).scalars()
 
     if not categories:
         abort(404, 'No categories found')
@@ -19,7 +19,7 @@ def get() -> jsonify:
 @category.route('/<int:category_id>')
 def get_by_id(category_id: int) -> jsonify:
 
-    category = Category.query.get(category_id)
+    category = db.session.execute(db.select(Category).filter_by(id=category_id)).scalar_one()
 
     if not category:
         abort(404, 'No category found')
@@ -43,7 +43,7 @@ def create() -> jsonify:
 def update(category_id: int) -> jsonify:
     data = request.get_json()
 
-    category = Category.query.get(category_id)
+    category = db.session.execute(db.select(Category).filter_by(id=category_id)).scalar_one()
 
     category.name = data.get('name', category.name)
     category.description = data.get('description', category.description)
@@ -56,7 +56,7 @@ def update(category_id: int) -> jsonify:
 @category.route('/<int:category_id>', methods=['DELETE'])
 def delete(category_id: int) -> jsonify:
 
-        category = Category.query.get(category_id)
+        category = db.session.execute(db.select(Category).filter_by(id=category_id)).scalar_one()
 
         if not category:
             abort(404, 'No category found')
