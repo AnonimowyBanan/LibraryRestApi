@@ -1,5 +1,6 @@
 from app.extensions import db
 from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy.orm import relationship
 
 
 class Book(db.Model, SerializerMixin):
@@ -11,6 +12,8 @@ class Book(db.Model, SerializerMixin):
     publishing_house_id = db.Column(db.Integer, db.ForeignKey('publishing_houses.id'), nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())
+
+    authors = relationship('BookAuthor', backref='book', cascade="all,delete")
 
     def __init__(self, title: str, author: str, year: int, publishing_house_id: int):
         self.title = title
