@@ -1,6 +1,7 @@
-from app.extensions import db
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import relationship
+
+from app.extensions import db
 
 
 class Book(db.Model, SerializerMixin):

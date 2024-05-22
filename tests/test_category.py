@@ -1,5 +1,6 @@
 from .conftest import client
 
+url = "/category/"
 
 test_category_data = {"name": "Test Category", "description": "Test Description"}
 test_category_data_updated = {"name": "Updated test Category", "description": "Updated test Description"}
@@ -17,7 +18,7 @@ def test_create(client):
         client (FlaskClient): The test client used to send requests to the application.
 
     """
-    response = client.post("/category/", json=test_category_data)
+    response = client.post(url, json=test_category_data)
 
     assert response.status_code == 201
 
@@ -35,7 +36,7 @@ def test_get(client):
         client (FlaskClient): The test client used to send requests to the application.
 
     """
-    response = client.get("/category/")
+    response = client.get(url)
 
     assert response.status_code == 200
     assert response.json[0]['name'] == test_category_data['name']
@@ -55,7 +56,7 @@ def test_get_by_id(client):
         client (FlaskClient): The test client used to send requests to the application.
 
     """
-    response = client.get("/category/1")
+    response = client.get(f"{url}1")
 
     assert response.status_code == 200
     assert response.json['name'] == test_category_data['name']
@@ -75,7 +76,7 @@ def test_update(client):
         client (FlaskClient): The test client used to send requests to the application.
 
     """
-    response = client.put("/category/1", json=test_category_data_updated)
+    response = client.put(f"{url}1", json=test_category_data_updated)
 
     assert response.status_code == 201
     assert response.json['name'] == test_category_data_updated['name']
@@ -95,6 +96,6 @@ def test_delete(client):
         client (FlaskClient): The test client used to send requests to the application.
 
     """
-    response = client.delete("/category/1")
+    response = client.delete(f"{url}1")
 
     assert response.status_code == 200

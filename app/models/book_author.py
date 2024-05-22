@@ -1,7 +1,9 @@
+from sqlalchemy_serializer import SerializerMixin
+
 from app.extensions import db
 
 
-class BookAuthor(db.Model):
+class BookAuthor(db.Model, SerializerMixin):
     __tablename__ = 'book_authors'
 
     id = db.Column(db.Integer, primary_key=True)
